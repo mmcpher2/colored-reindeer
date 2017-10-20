@@ -1,30 +1,32 @@
 
 
+// Empty Reindeer array of objects (Will have coloredReindeerObject's)
+coloredReindeer = []
 
-// JS for creating the data
-
-const coloredReindeerBuilder = function* () {
-    const reindeer = ["Dasher", "Dancer", "Prancer", "Vixen", "Comet", "Cupid", "Donner", "Blitzen"]
-
-    // Write a for loop that looks at each reindeer
-    for (let counter = 0; counter < reindeer.length; counter++) {
-        yield reindeer[counter]
+// Generator function to yield each color when instance is called
+    const colorsBuilder = function* () {
+        const colors = ["Blue", "Red", "Orange", "Purple", "Goldenrod", "Aquamarine", "Olive", "Azure", "Fuchsia", "Chocolate", "Salmon", "Amaranth"]     
+            for (let counter = 0; counter < colors.length; counter++) {
+                yield colors[counter]
+        }
     }
-}
+        // Instance of generating each reindeer color
+        const colorsGenerator = colorsBuilder()
 
-        const reindeerGenerator = coloredReindeerBuilder()
-
-        // Invoke factory function to create reindeer object
-
-        const coloredReindeerObject = function (name, color) {
+        // Invoke factory function to create reindeer object (deerName next to the function could be replaced by anything that replaces x : coloredReindeerOject(x))
+        const coloredReindeerObject = function (deerName) {
             return Object.create(null, {
-                "name": { value: reindeerGenerator.next().value, enumerable: true },
-                "color": { value: .next().value, enumerable: true}
+                "name": { value: deerName, enumerable: true },
+                "color": { value: colorsGenerator.next().value, enumerable: true}
             }
         )}
         
-        // Put new reindeer object in coloredReindeer array        
-        const coloredReindeer = []
-        
-    // Return coloredReindeer
-
+        // For Loop through all of the reindeer names and push into coloredReindeer array
+        const reindeer = ["Dasher", "Dancer", "Prancer", "Vixen", "Comet", "Cupid", "Donner", "Blitzen"]
+            for (let counter = 0; counter < reindeer.length; counter++) {
+                let reindeerObject = coloredReindeerObject(reindeer[counter])
+                coloredReindeer.push(reindeerObject)
+        }
+// Stringify coloredReindeer array an send to local storage
+const coloredReindeerString = JSON.stringify(coloredReindeer)
+localStorage.setItem("coloredReindeerString", coloredReindeerString)
